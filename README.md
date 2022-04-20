@@ -43,13 +43,17 @@ You can run the Jupyter Notebook and view/explore the data exploration to get a 
 2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
 4. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
 
-#Known Issues and Future Improvements
+# Known Issues and Future Improvements
 Some limitations: 
-- The data used is from pre-pandemic levels, so the traffic data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays. 
+- The age of vessels is not taken into account. More information of lifecycle of a ferry and related issues with aging vessels can improve predictive maintenance scheduling. 
+- The data used is from pre-pandemic levels, so the traffic congestion data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays.
 
-Future Improvements: 
+# Future Improvements: 
+- Integrating traffic congestion levels on nearby bridges to predict traffic volume related issues. 
+- Using data with more detailed issues/breakdown not only when on a trip but also outside operational hours.
 - A further improvement can be done by integrating at real-time tweets about ferries to improve prediction of traffic volume related delays/holdup. 
-#Reflections
+
+# Reflections
 
 
 #References
