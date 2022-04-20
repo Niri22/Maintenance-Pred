@@ -11,10 +11,32 @@ Due to COVID-19, Public Transport Operators have had decreased ridership and rev
 In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by the pandemic, including as a result of changed customer travel patterns, preventive health and safety measures and various travel restrictions. BC Ferries carried 6.7 million vehicles and 13.1 million passengers, decreases of 23.8% and 39.7% respectively, compared to the prior year. Revenue from vehicle and passenger traffic on the designated ferry routes in fiscal 2021 totalled $424.1 million, a decrease of $189.1 million from the prior year. (BC Ferries Annual Report to the BC Ferries Commissioner 2020-21).  Even with such significant changes, the annual maintenance cost was around $85 million in FY 2019 and FY 2020. This implies that the same scheduled maintenance routine was performed instead of a predictive maintenance routine. With hybrid work from home being the norm, we can expect the ridership annd revenue to remain lower tha pre-pandemic levels. 
 ![image](https://user-images.githubusercontent.com/66136976/164317143-abb50284-2eeb-4244-96e8-c05fec4474ec.png)
 Predictive maintenance refers to the use of data-driven, proactive maintenance methods that are designed to analyze the condition of equipment and help predict when maintenance should be performed. **Our project makes these data-driven predictions about unplanned downtime or breakdowns at the terminal and of ferries for future ferry trips. The operators can then use these predictions to scheduled issue specific maintenance as well as adapt operations and logistics of ferries, routes and terminals.** 
-
-We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used tigergraph to represent the relatioships within the data. Then algorithms from the TigerGraph Data Science Library were used to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
 ![image](https://user-images.githubusercontent.com/66136976/164328707-bd1119fb-c60d-4e73-bc77-6b467022c2a6.png)
+We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used tigergraph to represent the relatioships within the data. The schema and schema diagram can be seen as below .  Then algorithms from the TigerGraph Data Science Library were used to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
 
+Vertex Types: 
+  - VERTEX FerryTrip(PRIMARY_ID trip_id INT, Arrival_to_terminal STRING, Departure_to_terminal STRING, Vessel STRING, Status STRING, Date STRING, Time STRING, Delay_ind STRING, Trip_duration INT) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Termials(PRIMARY_ID terminal STRING, Route_area STRING, Short_term_parking_capacity INT, Long_term_parking_capacity STRING, TransLink STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Statuses(PRIMARY_ID Status STRING, Type STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Vessels(PRIMARY_ID Vessel STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Depart_time(PRIMARY_ID Time STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Days(PRIMARY_ID Day STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Months(PRIMARY_ID Month STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+  - VERTEX Terminals(PRIMARY_ID terminal STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+Edge Types: 
+  - DIRECTED EDGE Arrival_terminal(FROM FerryTrip, TO Termials) WITH REVERSE_EDGE="reverse_Arrival_terminal"
+  - DIRECTED EDGE reverse_Arrival_terminal(FROM Termials, TO FerryTrip) WITH REVERSE_EDGE="Arrival_terminal"
+  - DIRECTED EDGE Departure_from(FROM Termials, TO FerryTrip) WITH REVERSE_EDGE="reverse_Departure_from"
+  - DIRECTED EDGE reverse_Departure_from(FROM FerryTrip, TO Termials) WITH REVERSE_EDGE="Departure_from"
+  - UNDIRECTED EDGE Ferry_status(FROM FerryTrip, TO Statuses)
+  - UNDIRECTED EDGE Vessel_used(FROM FerryTrip, TO Vessels)
+  - UNDIRECTED EDGE Departed_time(FROM Depart_time, TO FerryTrip)
+  - UNDIRECTED EDGE trip_day(FROM FerryTrip, TO Days)
+  - UNDIRECTED EDGE trip_month(FROM Months, TO FerryTrip)
+
+Graphs: 
+  - Graph Draft1(FerryTrip:v, Termials:v, Statuses:v, Vessels:v, Depart_time:v, Days:v, Months:v, Arrival_terminal:e, reverse_Arrival_terminal:e, Departure_from:e, reverse_Departure_from:e, Ferry_status:e, Vessel_used:e, Departed_time:e, trip_day:e, trip_month:e)
+ ![image](https://user-images.githubusercontent.com/66136976/164337914-42ceceea-8a1e-4ed7-a21e-e7e38eddaa9d.png)
 
 To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After test and training data were clustered, we used a classification algorithm within the cluster to predict the ‘status’ label of test ferry trips. The output of algorithm produces a table with test trips as rows and predicted probablity of each Status type as columnns. For each test trip, the status is equal the highest predictied probablity for all Statuses.
 
