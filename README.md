@@ -1,10 +1,10 @@
-# Asset Maintenance Analysis
+# Asset Predictive Maintenance 
 
 ### Contributers and Contact Information: Niranjani.Pandey (niranjani.pandey168@gmail.com)
 
 ## Problem Statement addressed: GRAPH FOR BETTER SYSTEMS
 
-Due to COVID-19, Public Transport Operators have had decreased ridership and revenue. With significatly lower ridership and additional cost for sanitisation of vehicles and platforms, Operators have been looking to lower their costs without impacting customer experience. We present an alternnative maintenance scheduling strategy to reduce maintance cost related to upkeep of transport vehicles. In this particular solution, we will be looking at Ferry Maintenance of BC Ferries, which run about 20 ferries over 12 routes and 8 termials. 
+Due to COVID-19, Public Transport Operators have had decreased ridership and revenue. With significantly lower ridership and additional cost for sanitization of vehicles and platforms, Operators have been looking to lower their costs without impacting customer experience. We present an alternative maintenance scheduling strategy to reduce maintenance cost related to upkeep of transport vehicles. In this particular solution, we will be looking at Ferry Maintenance of BC Ferries, which run about 20 ferries over 12 routes and 8 terminals. 
 
 ### Description:
 In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by the pandemic, including as a result of changed customer travel patterns, preventive health and safety measures and various travel restrictions. BC Ferries carried 6.7 million vehicles and 13.1 million passengers, decreases of 23.8% and 39.7% respectively, compared to the prior year. Revenue from vehicle and passenger traffic on the designated ferry routes in fiscal 2021 totalled $424.1 million, a decrease of $189.1 million from the prior year. (BC Ferries Annual Report to the BC Ferries Commissioner 2020-21).  Even with such significant changes, the annual maintenance cost was around $85 million in FY 2019 and FY 2020. This implies that the same scheduled maintenance routine was performed instead of a predictive maintenance routine. With hybrid work from home being the norm, we can expect the ridership annd revenue to remain lower tha pre-pandemic levels. 
@@ -32,3 +32,28 @@ train.csv This dataset is a comma separated variable file indicating details abo
 - "Year" An integer indicating the year of the sail (2016, 2017, etc).
 - "Full.Date" A string indicating the date of the sail in the form "28 August 2016", "29 August 2016", etc. Note that this column contains information from which the previous 4 columns can be derived. These 4 columns are provided for convenience, obviating the need to cross list with calendars.
 - "Delay.Indicator" An integer binary indicator (0 or 1) describing whether or not the sailing was delayed (0 = no delay, 1 = delay). **We did not predict the Delay Indicator. We are predicting Status in our project**
+
+
+# Installation
+Instructions: 
+### Exploratory Data Analysis
+You can run the Jupyter Notebook and view/explore the data exploration to get a better understanding of the training and test data.
+### To determine predictions:
+1. Clone repository
+2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
+4. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
+
+#Known Issues and Future Improvements
+Some limitations: 
+- The data used is from pre-pandemic levels, so the traffic data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays. 
+
+Future Improvements: 
+- A further improvement can be done by integrating at real-time tweets about ferries to improve prediction of traffic volume related delays/holdup. 
+#Reflections
+
+
+#References
+https://www150.statcan.gc.ca/n1/pub/45-28-0001/2021001/article/00030-eng.htm
+https://www.bcferries.com/our-company/investor-relations
+https://www.kaggle.com/competitions/canssi-ncsc-ferry-delays/data
+https://docs-legacy.tigergraph.com
