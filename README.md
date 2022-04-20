@@ -6,6 +6,7 @@
 
 Due to COVID-19, Public Transport Operators have had decreased ridership and revenue. With significantly lower ridership and additional cost for sanitization of vehicles and platforms, Operators have been looking to lower their costs without impacting customer experience. We present an alternative maintenance scheduling strategy to reduce maintenance cost related to upkeep of transport vehicles. In this particular solution, we will be looking at Ferry Maintenance of BC Ferries, which run about 20 ferries over 12 routes and 8 terminals. 
 
+
 ### Description:
 In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by the pandemic, including as a result of changed customer travel patterns, preventive health and safety measures and various travel restrictions. BC Ferries carried 6.7 million vehicles and 13.1 million passengers, decreases of 23.8% and 39.7% respectively, compared to the prior year. Revenue from vehicle and passenger traffic on the designated ferry routes in fiscal 2021 totalled $424.1 million, a decrease of $189.1 million from the prior year. (BC Ferries Annual Report to the BC Ferries Commissioner 2020-21).  Even with such significant changes, the annual maintenance cost was around $85 million in FY 2019 and FY 2020. This implies that the same scheduled maintenance routine was performed instead of a predictive maintenance routine. With hybrid work from home being the norm, we can expect the ridership annd revenue to remain lower tha pre-pandemic levels. 
 ![image](https://user-images.githubusercontent.com/66136976/164317143-abb50284-2eeb-4244-96e8-c05fec4474ec.png)
@@ -36,17 +37,20 @@ train.csv This dataset is a comma separated variable file indicating details abo
 
 # Installation
 Instructions: 
-### Exploratory Data Analysis
-You can run the Jupyter Notebook and view/explore the data exploration to get a better understanding of the training and test data.
+
 ### To determine predictions:
 1. Clone repository
 2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
 4. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
+##### Exploratory Data Analysis
+You can run the Jupyter Notebook and view/explore the data exploration to get a better understanding of the training and test data.
+
 
 # Known Issues and Future Improvements
 Some limitations: 
 - The age of vessels is not taken into account. More information of lifecycle of a ferry and related issues with aging vessels can improve predictive maintenance scheduling. 
 - The data used is from pre-pandemic levels, so the traffic congestion data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays.
+
 
 # Future Improvements: 
 - Integrating traffic congestion levels on nearby bridges to predict traffic volume related issues. 
