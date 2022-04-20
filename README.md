@@ -13,6 +13,7 @@ In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by t
 Predictive maintenance refers to the use of data-driven, proactive maintenance methods that are designed to analyze the condition of equipment and help predict when maintenance should be performed. **Our project makes these data-driven predictions about unplanned downtime or breakdowns at the terminal and of ferries for future ferry trips. The operators can then use these predictions to scheduled issue specific maintenance as well as adapt operations and logistics of ferries, routes and terminals.** 
 
 We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used graph technology to combine this data with a time series of temperature and humidity from Vancouver Harbour and a time series of temperature, humidity, pressure, wind speed, and wind direction. We then used the complex graph with algorithms to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
+![image](https://user-images.githubusercontent.com/66136976/164328707-bd1119fb-c60d-4e73-bc77-6b467022c2a6.png)
 
 
 To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After test and training data were clustered, we used a classification algorithm within the cluster to predict the ‘delay_indicator’ label of test ferry trips. If the indicator was 1, then trip would have a status of the cluster. If the indicator was 0, then the trip would have a status label of the cluster.
@@ -34,6 +35,39 @@ train.csv This dataset is a comma separated variable file indicating details abo
 - "Full.Date" A string indicating the date of the sail in the form "28 August 2016", "29 August 2016", etc. Note that this column contains information from which the previous 4 columns can be derived. These 4 columns are provided for convenience, obviating the need to cross list with calendars.
 - "Delay.Indicator" An integer binary indicator (0 or 1) describing whether or not the sailing was delayed (0 = no delay, 1 = delay). **We did not predict the Delay Indicator. We are predicting Status in our project**
 
+### Some information about the routes: 
+Tsawwassen - Metro Vancouver (Tsawwassen) to Victoria - Vancouver Island (Swartz Bay)
+- uses vessel Spirit of Vancouver Island made 1994, 167m long, 11,681 tonnes, 2100 passenger, 19.5 knots, 21394 hp
+- uses vessel Spirit of British Columbia made 1993, 167m long, 11,642 tonnes, 2,100 passengers, 19.5 knots, 21,394 hp
+- uses vessel Queen of New Westiminster 1964 build, 130m long, 6,129 tonnes displacement, 1332 passenger, 20 knots, 16800 hp
+- uses vessel Coastal Celebration made 2007, 160m long, 10034 tonnes, 1604 passenger, 23 knots, 21,444 hp
+- These are all big vessels.
+
+West Vancouver – Metro Vancouver (Horseshoe Bay) to Nanaimo – Vancouver Island (Departure Bay)
+- uses vessel Queen of Oak Bay built 1981, 139m long, 6,673 tonnes, 1494 passengers, 20.5 knots, 11,840 hp
+- uses vessel Coastal Renaissance (this is a big vessel) goes @ 23 knots, hp of 21,444, around 160m long and 10 tonnes, built in 2007, 1604 passengers
+- uses vessel Queen of Coquitlam built 1976, 139m long, 316 family sized car capacity people stay in cars, 1494 passengers, 20.5 knots, 11,860 hp
+- uses vessel Queen of Cowichan goes @ 20.5 knots, 11,860 hp, 1,494 passengers, 6,508 tonnes, 139m long, built 1976
+- These are all mid-sized vessels.
+
+More routes are drawn here Major and Northern Routes vessel positions are shown here bcferries.com.
+
+Here are the ones we are interested in for Vancouver-Vancouver Island Routes:
+- Swartz Bay - Tsawwassen (around 1h30m bidirectional travel)Swartz Bay - Tsawwassen
+- Horseshoe Bay - Departure Bay (around 1h45m bidirectional travel)Horseshoe Bay - Departure Bay
+(*) The routes we are concerned with are only (2) of (9), we can't assume the other routes are causally independent
+ 
+ ### Some information about ferry trips statuses:
+- 88.2% BC Ferries departed on time or within 10 minutes of scheduled sailing times
+- Sailing were late for several reasons
+  - [58%] Heavy Traffic
+  - [25%] Procedural Issues (i.e. marine traffic, accommodating passengers, fuelling, Transport Canada required drills)
+  - deck space is given to a mix of passenger deck space (car/van/SUV) and mixed vehicle deck space (car/van/SUV/Truck/bus/RV), here is a graph
+  - [5%] Mechanical
+  - [6%] Incidents (i.e. medical and rescue emergencies, vehicles stalled or stuck onboard, customer-related incidents)
+  BCFerries twitter feed is just a litany of disasters twitter of BCFerries which cause delays
+  - [3%] Weather
+  - [3%] Miscellaneous
 
 # Installation
 Instructions: 
@@ -42,8 +76,7 @@ Instructions:
 1. Clone repository
 2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
 4. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
-##### Exploratory Data Analysis
-You can run the Jupyter Notebook and view/explore the data exploration to get a better understanding of the training and test data.
+
 
 
 # Known Issues and Future Improvements
@@ -60,8 +93,10 @@ Some limitations:
 # Reflections
 
 
-#References
+# References
 https://www150.statcan.gc.ca/n1/pub/45-28-0001/2021001/article/00030-eng.htm
 https://www.bcferries.com/our-company/investor-relations
 https://www.kaggle.com/competitions/canssi-ncsc-ferry-delays/data
 https://docs-legacy.tigergraph.com
+https://www.bcferries.com/web_image/h81/hcb/8805916246046.pdf
+https://www.kaggle.com/code/iainwong/0-0-2-iainwong-domainknowledge-ncsc-ferry-delays
