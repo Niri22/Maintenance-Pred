@@ -115,11 +115,10 @@ Some limitations:
 
 
 # Future Improvements: 
-- Integrating traffic congestion levels on nearby bridges to predict traffic volume related issues. 
-- Intergrating passeger volume information by utilisng TransLink(train) ridership and volume
+- Integrating traffic congestion levels on nearby bridges to predict traffic volume related issues.
+- Integrating passenger volume information by utilizing TransLink(train) ridership and volume
 - Using data with more detailed issues/breakdown not only when on a trip but also outside operational hours.
-- A further improvement can be done by integrating at real-time tweets about ferries to improve prediction of traffic volume related delays/holdup. 
-
+- A further improvement can be done by integrating at real-time tweets about ferries to improve prediction of traffic volume related delays/holdup.
 
 
 # References
