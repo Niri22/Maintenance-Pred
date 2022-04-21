@@ -38,7 +38,7 @@ Graphs:
   - Graph Draft1(FerryTrip:v, Termials:v, Statuses:v, Vessels:v, Depart_time:v, Days:v, Months:v, Arrival_terminal:e, reverse_Arrival_terminal:e, Departure_from:e, reverse_Departure_from:e, Ferry_status:e, Vessel_used:e, Departed_time:e, trip_day:e, trip_month:e)
  ![image](https://user-images.githubusercontent.com/66136976/164337914-42ceceea-8a1e-4ed7-a21e-e7e38eddaa9d.png)
 
-To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After test and training data were clustered, we used a classification algorithm within the cluster to predict the ‘status’ label of test ferry trips. The output of algorithm produces a table with test trips as rows and predicted probablity of each Status type as columnns. For each test trip, the status is equal the highest predictied probablity for all Statuses.
+To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After training data were clustered, we loaded trainig data an used a classification algorithm within the cluster to predict the ‘status’ label of test ferry trips. The output of algorithm produces a list of Ferry Trip with Status attribute for every vertex. 
 
 This solution isn’t only applicable for ferries but also other transport vehicles. Using similar data, predictive issues with metro cars, streetcars, airplanes, buses and taxies can be found.  According to the McKinsey management consulting firm, predictive maintenance can generate substantial savings by **increasing production line availability by 5 to 15% and reducing maintenance costs by 18 to 25%**. A 18 to 25% reduction in maintenance cost for BC Ferries would lead to **savings of $15.3 million - $21.35 million every year**.
 
@@ -97,11 +97,12 @@ Instructions:
 ### To determine predictions:
 1. Clone repository
 2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
-3. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
+3. Run installed queries in tg cloud.
 4. Queries to run: 
-  - First, only load the training data and run tg_label_prop on vertices ('Statuses' and 'FerryTrip'), edges('Ferry_status')
-
-
+  - First, only load the training data and run tg_label_prop(['Statuses' and 'FerryTrip'], ['Ferry_status'],max_iter = 100, output_limit = 0, TRUE,_, 'StatusClusters'). 
+    - The @@comm_sizes_map should have 32 coloumns representig 32 labels and their sizes. 
+    - The FerryTrip vertices should have an attribute value for 'Status_cluster'
+  - Load test data and run tg_knn_cosine_all
 
 # Known Issues and Future Improvements
 Some limitations: 
