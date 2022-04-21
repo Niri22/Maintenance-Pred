@@ -1,4 +1,4 @@
-# Asset Predictive Maintenance 
+# Predictive Asset Maintenance Plan
 
 ### Contributers and Contact Information: Niranjani.Pandey (niranjani.pandey168@gmail.com)
 
