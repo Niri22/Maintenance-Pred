@@ -12,7 +12,7 @@ In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by t
 ![image](https://user-images.githubusercontent.com/66136976/164317143-abb50284-2eeb-4244-96e8-c05fec4474ec.png)
 Predictive maintenance refers to the use of data-driven, proactive maintenance methods that are designed to analyze the condition of equipment and help predict when maintenance should be performed. **Our project makes these data-driven predictions about unplanned downtime or breakdowns at the terminal and of ferries for future ferry trips. The operators can then use these predictions to scheduled issue specific maintenance as well as adapt operations and logistics of ferries, routes and terminals.** 
 ![image](https://user-images.githubusercontent.com/66136976/164328707-bd1119fb-c60d-4e73-bc77-6b467022c2a6.png)
-We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used tigergraph to represent the relatioships within the data. The schema and schema diagram can be seen as below .  Then algorithms from the TigerGraph Data Science Library were used to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
+We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used tigergraph to represent the relatioships within the data. It lead to a graph with 49,885 vertices and 445,536 vertices. The schema and schema diagram can be seen as below .  Then algorithms from the TigerGraph Data Science Library were used to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
 
 Vertex Types: 
   - VERTEX FerryTrip(PRIMARY_ID trip_id INT, Arrival_to_terminal STRING, Departure_to_terminal STRING, Vessel STRING, Status STRING, Date STRING, Time STRING, Delay_ind STRING, Trip_duration INT) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
@@ -38,7 +38,7 @@ Graphs:
   - Graph Draft1(FerryTrip:v, Termials:v, Statuses:v, Vessels:v, Depart_time:v, Days:v, Months:v, Arrival_terminal:e, reverse_Arrival_terminal:e, Departure_from:e, reverse_Departure_from:e, Ferry_status:e, Vessel_used:e, Departed_time:e, trip_day:e, trip_month:e)
  ![image](https://user-images.githubusercontent.com/66136976/164337914-42ceceea-8a1e-4ed7-a21e-e7e38eddaa9d.png)
 
-To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After test and training data were clustered, we used a classification algorithm within the cluster to predict the ‘status’ label of test ferry trips. The output of algorithm produces a table with test trips as rows and predicted probablity of each Status type as columnns. For each test trip, the status is equal the highest predictied probablity for all Statuses.
+To get predictions on ‘Status’ label of a ferry trip, we first used a community detection algorithm on training and testing data from the Tiger Graph Data Science library to identify clusters of Trips and neighbouring vertices with some status labels such as On time, Operational Delays, Mechanical difficulties with vessel, Extreme tidal conditions,  Mechanical difficulties with terminal equipment, Heavy traffic volume, and Vessel start-up delays. After training data were clustered, we loaded trainig data an used a classification algorithm within the cluster to predict the ‘status’ label of test ferry trips. The output of algorithm produces a list of Ferry Trip with Status attribute for every vertex. 
 
 This solution isn’t only applicable for ferries but also other transport vehicles. Using similar data, predictive issues with metro cars, streetcars, airplanes, buses and taxies can be found.  According to the McKinsey management consulting firm, predictive maintenance can generate substantial savings by **increasing production line availability by 5 to 15% and reducing maintenance costs by 18 to 25%**. A 18 to 25% reduction in maintenance cost for BC Ferries would lead to **savings of $15.3 million - $21.35 million every year**.
 
@@ -97,16 +97,19 @@ Instructions:
 ### To determine predictions:
 1. Clone repository
 2. Import tar ball solution and data in csv files into TigerGraph using Import Existing Solution
-3. Run installed queries in tg cloud or using Terminal(I used Terminal because it was easy to extract the output).
-4. Queries to run: 
-  - First, only load the training data and run tg_label_prop on vertices ('Statuses' and 'FerryTrip'), edges('Ferry_status')
+3. Install tg_label_prop and tg_knn_cosine_all queries from https://docs-legacy.tigergraph.com/graph-algorithm-library/classification/k-nearest-neighbors-batch-version. 
+4. Queries ato run: 
+  - First, only load the training data and run tg_label_prop where vertices = ['Statuses' and 'FerryTrip'], edges = ['Ferry_status'],max_iter = 100, output_limit = 0, TRUE,_, 'StatusCluster'). 
+    - The @@comm_sizes_map should have 32 coloumns representig 32 labels and their sizes. 
+    - The FerryTrip vertices should have an attribute value for 'Status_cluster'
+  - Load test data and run tg_knn_cosine_all on all FerryData vertices with all vertices, edges, and reverse_edges, _, 'Status', 6, 'Status'
+  - Go to the table format button and download the file. 
+  - END
 
-
-
-# Known Issues and Future Improvements
+# Reflections, Known Issues and Future Improvements
 Some limitations: 
 - The age of vessels is not taken into account. More information of lifecycle of a ferry and related issues with aging vessels can improve predictive maintenance scheduling. 
-- The data used is from pre-pandemic levels, so the traffic congestion data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays.
+- The data used is from pre-pandemic levels, so the traffic congestion data provided by CANSSI will not lead to realistic measure of impact of traffic congestion on bridges nearby on traffic delays. In addition, with changing customer travel patterns due to 
 
 
 # Future Improvements: 
@@ -115,7 +118,6 @@ Some limitations:
 - Using data with more detailed issues/breakdown not only when on a trip but also outside operational hours.
 - A further improvement can be done by integrating at real-time tweets about ferries to improve prediction of traffic volume related delays/holdup. 
 
-# Reflections
 
 
 # References
