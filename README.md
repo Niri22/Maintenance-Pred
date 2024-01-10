@@ -12,6 +12,8 @@ In fiscal 2021, traffic and revenue of BC Ferries were drastically impacted by t
 ![image](https://user-images.githubusercontent.com/66136976/164317143-abb50284-2eeb-4244-96e8-c05fec4474ec.png)
 
 Predictive maintenance refers to the use of data-driven, proactive maintenance methods that are designed to analyze the condition of equipment and help predict when maintenance should be performed. **Our project makes these data-driven predictions about unplanned downtime or breakdowns at the terminal and of ferries for future ferry trips. The operators can then use these predictions to scheduled issue specific maintenance as well as adapt operations and logistics of ferries, routes and terminals.** Demo https://www.youtube.com/watch?v=kENcaTwbYew&feature=emb_logo<Here>
+
+
 ![image](https://user-images.githubusercontent.com/66136976/164328707-bd1119fb-c60d-4e73-bc77-6b467022c2a6.png)
 
 We utilized data provided from BC Ferries for CANSSI NCSC Ferry Delays Kaggle Competition. It included data involving records about the sailing of 61,880 sailings occurring between August 2016 and March 28 and an indicator is provided describing whether or not the sailing was delayed as well as delay reason. By utilizing data from readily available and established sources also reduces the cost and effort of implementation of tracking sensors on ferry equipment which usually follows a switch to predictive maintenance. We used tigergraph to represent the relationships within the data. It lead to a graph with 49,885 vertices and 445,536 vertices. The schema and schema diagram can be seen as below . Then algorithms from the TigerGraph Data Science Library were used to predict a trip’s status ( ‘Status’ label attribute in the FerryTrip vertices). 
